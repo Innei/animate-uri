@@ -4,7 +4,7 @@ Animate your url transitions for that extra flair.
 
 Inspire by [Neal Agarwal](https://twitter.com/nealagarwal/status/1293578708247248897)
 
-Look at [demo](https://innei.github.io/animate-uri)
+Look at [demo](https://innei.github.io/animate-uri/)
 
 ## Usage
 
