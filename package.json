@@ -1,0 +1,13 @@
+{
+  "name": "animate-uri",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Animate your url transitions for that extra flair",
+  "author": "Innei",
+  "main": "publish/index.js",
+  "source": "index.ts",
+  "repository": "Innei/animate-uri",
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  }
+}
