@@ -1,21 +1,26 @@
-export declare const animateUriFactory: () => {
-    /**
-     *
-     * @param {{duration?: number,shouldPushState?: boolean}}
-     */
-    create({ duration, shouldPushState, }?: {
-        duration?: number | undefined;
-        shouldPushState?: boolean | undefined;
-    }): {
-        start: (to: string, startWith: string | undefined) => void;
-        stop: () => void;
-    };
+interface AnimationConfig {
+    duration?: number;
+    shouldPushState?: boolean;
+    backspacingEmoji?: string;
+    buildingEmoji?: string;
+}
+export declare const EmojiRegExp: RegExp;
+export declare const animateUriFactory: (config?: AnimationConfig) => {
     /**
      *
      * @param {string} to
      * @param {string | undefined} startWith
      */
-    start(to: string, startWith: string | undefined): void;
+    start(to: string, startWith?: string | undefined): any;
     stop(): void;
 };
-//# sourceMappingURL=index.d.ts.map
+export declare const bindAllLink: (config?: AnimationConfig | undefined) => {
+    /**
+     *
+     * @param {string} to
+     * @param {string | undefined} startWith
+     */
+    start(to: string, startWith?: string | undefined): any;
+    stop(): void;
+};
+export {};

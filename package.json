@@ -1,13 +1,21 @@
 {
   "name": "animate-uri",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "description": "Animate your url transitions for that extra flair",
   "author": "Innei",
   "main": "publish/index.js",
   "source": "index.ts",
   "repository": "Innei/animate-uri",
+  "types": "publish/index.d.ts",
+  "scripts": {
+    "predeploy": "rm -rf dist",
+    "package": "sh ./build-package.sh",
+    "start": "parcel index.html",
+    "deploy": "parcel build ./index.html --public-url ./animate-uri && gh-pages -d dist"
+  },
   "devDependencies": {
+    "cssnano": "^4.1.10",
     "typescript": "^3.9.7"
   }
 }

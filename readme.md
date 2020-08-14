@@ -17,11 +17,19 @@ yarn add animate-uri
 Then
 
 ```js
-import { animateUriFactory } from 'animate-uri'
+import { animateUriFactory, bindAllLink } from 'animate-uri'
 
-animateUriFactory()
-  .create({ duration: 300, shouldPushState: false })
-  .start('/hello-world', '/')
+animateUriFactory({ duration: 60, shouldPushState: false }).start(
+  '/hello-world',
+  '/',
+)
 ```
 
-That all.
+To bind all inside links, (Optional)
+
+```js
+const instance = bindAllLink() // return a instance
+// do anything...
+```
+
+That's all.

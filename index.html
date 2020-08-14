@@ -1,7 +1,7 @@
 <!--
  * @Author: Innei
  * @Date: 2020-08-13 19:55:07
- * @LastEditTime: 2020-08-13 21:56:09
+ * @LastEditTime: 2020-08-14 13:30:35
  * @LastEditors: Innei
  * @FilePath: /url-animation/index.html
  * @Coding with Love
@@ -14,18 +14,45 @@
     <title>url animation</title>
   </head>
   <body>
+    <style>
+      #app {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        justify-content: center;
+        align-self: center;
+        flex-direction: column;
+        text-align: center;
+      }
+      :root,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .form {
+        margin-top: 20px;
+      }
+    </style>
     <div id="app">
       <li>
-        <a href="#This-is-a-very-cool-transition"
+        <a href="/This-is-a-very-cool-transition"
           >This is a very cool transition</a
         >
       </li>
       <li>
-        <a href="#Click-here">Click here</a>
+        <a href="/Click-here">Click here</a>
       </li>
+
+      <div class="form">
+        <label>
+          destination to:
+        </label>
+        <input type="text" id="destination" />
+
+        <button id="button">Go!</button>
+      </div>
     </div>
   </body>
-  <script src="./test.js"></script>
-  <script src="./script.js"></script>
-  <script></script>
+
+  <script src="./script.ts"></script>
 </html>

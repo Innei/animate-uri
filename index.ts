@@ -1,47 +1,45 @@
 /*
  * @Author: Innei
  * @Date: 2020-08-13 21:31:23
- * @LastEditTime: 2020-08-13 21:46:59
+ * @LastEditTime: 2020-08-14 13:31:47
  * @LastEditors: Innei
- * @FilePath: /url-animation/package.ts
+ * @FilePath: /url-animation/index.ts
  * @Coding with Love
  */
 
-export const animateUriFactory = () => {
-  /**
-   * @type {number | null}
-   */
+interface AnimationConfig {
+  duration?: number
+  shouldPushState?: boolean
+  backspacingEmoji?: string
+  buildingEmoji?: string
+}
+export const EmojiRegExp = /<% emojiSequence %>|\p{Emoji_Presentation}|\p{Emoji}\uFE0F|\p{Emoji_Modifier_Base}/gu
+export const animateUriFactory = (
+  config: AnimationConfig = {
+    duration: 60,
+    shouldPushState: true,
+    backspacingEmoji: `🔨👴`,
+    buildingEmoji: `🍻`,
+  },
+) => {
+  if (!('replaceState' in history)) {
+    throw new Error('browser not support replaceState.')
+  }
+
   let timer: number | undefined = undefined
-  let duration = 100
   let navigator = ''
-  let shouldPushState = true
+  const duration = config.duration || 100
+  const shouldPushState = config.shouldPushState || true
+  const backspacingEmoji = config.backspacingEmoji || `🔨👴`
+  const buildingEmoji = config.buildingEmoji || `🍻`
+
   return {
-    /**
-     *
-     * @param {{duration?: number,shouldPushState?: boolean}}
-     */
-    create(
-      {
-        duration,
-        shouldPushState,
-      }: { duration?: number; shouldPushState?: boolean } = {
-        duration: 100,
-        shouldPushState: true,
-      },
-    ) {
-      duration = duration ?? 100
-      shouldPushState = shouldPushState ?? true
-      return {
-        start: this.start,
-        stop: this.stop,
-      }
-    },
     /**
      *
      * @param {string} to
      * @param {string | undefined} startWith
      */
-    start(to: string, startWith: string | undefined) {
+    start(to: string, startWith?: string | undefined) {
       if (typeof to !== 'string' || to.charAt(0) !== '/') {
         throw new Error('to must start with `/`')
       }
@@ -56,28 +54,19 @@ export const animateUriFactory = () => {
       const currentTitle = document.title
 
       timer = setInterval(() => {
-        const beforeUri = encodeURI(
-          decodeURI(location.pathname).replace(
-            /<% emojiSequence %>|\p{Emoji_Presentation}|\p{Emoji}\uFE0F|\p{Emoji_Modifier_Base}/gu,
-            '',
-          ),
-        )
-
-        // const handler = (event) => {
-        //   clearInterval(timer)
-        //   history.pushState(null, title ?? currentTitle, afterUri)
-        //   event.preventDefault()
-        //   const msg = '地址正在过度, 现在刷新可能出现问题哦'
-        //   event.returnValue = msg
-        //   return msg
-        // }
+        let beforeUri = decodeURI(location.pathname).replace(EmojiRegExp, '')
 
         if (beforeUri === to) {
           return this.stop()
-          // window.removeEventListener('beforeunload', handler)
         }
-        const isBuild = to.indexOf(beforeUri) > -1
-        const stepUri = isBuild
+        const isBuilding = to.indexOf(beforeUri) > -1
+
+        // beforeUri = beforeUri.replace(
+        //   new RegExp(`${isBuilding ? buildingEmoji : backspacingEmoji}$`, 'gu'),
+        //   '',
+        // )
+
+        const stepUri = isBuilding
           ? beforeUri.concat(to.charAt(beforeUri.length))
           : beforeUri.slice(0, beforeUri.length - 1)
         if (!once) {
@@ -90,10 +79,10 @@ export const animateUriFactory = () => {
         history.replaceState(
           null,
           currentTitle,
-          `${stepUri}${!isBuild ? `🔨👴` : `🍻`}`,
+          `${stepUri}${!isBuilding ? backspacingEmoji : buildingEmoji}`,
         )
       }, duration)
-
+      return this
       // history.replaceState(null, title ?? currentTitle, uri)
     },
     stop() {
@@ -101,4 +90,25 @@ export const animateUriFactory = () => {
       return history.replaceState(null, '', navigator)
     },
   }
+}
+
+export const bindAllLink = (config?: AnimationConfig) => {
+  const instance = animateUriFactory(config)
+  const $$links = Array.from(document.querySelectorAll('a'))
+  for (const $link of $$links) {
+    const destination = $link.getAttribute('href')
+
+    if (
+      destination &&
+      destination.charAt(0) === '/' &&
+      destination.charAt(1) !== '/'
+    ) {
+      $link.addEventListener('click', (e) => {
+        e.preventDefault()
+        instance.start(destination)
+      })
+    }
+  }
+
+  return instance
 }
