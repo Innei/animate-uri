@@ -1,12 +1,12 @@
 /*
  * @Author: Innei
  * @Date: 2020-08-13 21:31:23
- * @LastEditTime: 2020-08-14 13:31:47
+ * @LastEditTime: 2020-08-14 14:20:13
  * @LastEditors: Innei
  * @FilePath: /url-animation/index.ts
  * @Coding with Love
  */
-
+const isSSR = typeof window === 'undefined'
 interface AnimationConfig {
   duration?: number
   shouldPushState?: boolean
@@ -22,6 +22,9 @@ export const animateUriFactory = (
     buildingEmoji: `🍻`,
   },
 ) => {
+  if (isSSR) {
+    return
+  }
   if (!('replaceState' in history)) {
     throw new Error('browser not support replaceState.')
   }
@@ -40,59 +43,66 @@ export const animateUriFactory = (
      * @param {string | undefined} startWith
      */
     start(to: string, startWith?: string | undefined) {
-      if (typeof to !== 'string' || to.charAt(0) !== '/') {
-        throw new Error('to must start with `/`')
-      }
-
-      if (timer) {
-        timer = clearInterval(timer) as undefined
-      }
-      if (startWith && startWith.charAt(0) === '/') {
-        history.replaceState(null, '', startWith)
-      }
-      let once = false
-      const currentTitle = document.title
-
-      timer = setInterval(() => {
-        let beforeUri = decodeURI(location.pathname).replace(EmojiRegExp, '')
-
-        if (beforeUri === to) {
-          return this.stop()
+      return new Promise((resolve, reject) => {
+        if (typeof to !== 'string' || to.charAt(0) !== '/') {
+          reject(new Error('to must start with `/`'))
         }
-        const isBuilding = to.indexOf(beforeUri) > -1
 
-        // beforeUri = beforeUri.replace(
-        //   new RegExp(`${isBuilding ? buildingEmoji : backspacingEmoji}$`, 'gu'),
-        //   '',
-        // )
+        if (timer) {
+          timer = clearInterval(timer) as undefined
+        }
+        if (startWith && startWith.charAt(0) === '/') {
+          history.replaceState(null, '', startWith)
+        }
+        let once = false
+        const currentTitle = document.title
 
-        const stepUri = isBuilding
-          ? beforeUri.concat(to.charAt(beforeUri.length))
-          : beforeUri.slice(0, beforeUri.length - 1)
-        if (!once) {
-          navigator = to
-          if (shouldPushState) {
-            history.pushState(null, currentTitle, to)
+        timer = setInterval(() => {
+          let beforeUri = decodeURI(location.pathname).replace(EmojiRegExp, '')
+
+          if (beforeUri === to) {
+            resolve()
+            return this.stop()
           }
-          once = true
-        }
-        history.replaceState(
-          null,
-          currentTitle,
-          `${stepUri}${!isBuilding ? backspacingEmoji : buildingEmoji}`,
-        )
-      }, duration)
-      return this
-      // history.replaceState(null, title ?? currentTitle, uri)
+          const isBuilding = to.indexOf(beforeUri) > -1
+
+          // beforeUri = beforeUri.replace(
+          //   new RegExp(`${isBuilding ? buildingEmoji : backspacingEmoji}$`, 'gu'),
+          //   '',
+          // )
+
+          const stepUri = isBuilding
+            ? beforeUri.concat(to.charAt(beforeUri.length))
+            : beforeUri.slice(0, beforeUri.length - 1)
+          if (!once) {
+            navigator = to
+            if (shouldPushState) {
+              history.pushState(null, currentTitle, to)
+            }
+            once = true
+          }
+          history.replaceState(
+            null,
+            currentTitle,
+            `${stepUri}${!isBuilding ? backspacingEmoji : buildingEmoji}`,
+          )
+        }, duration)
+      })
     },
     stop() {
       timer = clearInterval(timer) as undefined
       return history.replaceState(null, '', navigator)
     },
+    cancel() {
+      timer = clearInterval(timer) as undefined
+    },
   }
 }
 
 export const bindAllLink = (config?: AnimationConfig) => {
+  if (isSSR) {
+    return
+  }
   const instance = animateUriFactory(config)
   const $$links = Array.from(document.querySelectorAll('a'))
   for (const $link of $$links) {
@@ -105,7 +115,7 @@ export const bindAllLink = (config?: AnimationConfig) => {
     ) {
       $link.addEventListener('click', (e) => {
         e.preventDefault()
-        instance.start(destination)
+        instance?.start(destination)
       })
     }
   }
