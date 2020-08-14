@@ -4,4 +4,4 @@ var u;function D(u){return(D="function"==typeof Symbol&&"symbol"==typeof Symbol.
 },{}],"g4tf":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var t=require("./publish");t.animateUriFactory({duration:60,shouldPushState:!1}).start("/hello-world","/");var e=t.bindAllLink(),n=document.getElementById("destination"),r=document.getElementById("button");r.onclick=function(t){var r=n.value;"/"!=r.charAt(0)&&(r="/".concat(r)),e.start(r)};
 },{"./publish":"ESML"}]},{},["g4tf"], null)
-//# sourceMappingURL=script.8e200d2b.js.map
+//# sourceMappingURL=/animate-uri/script.8e200d2b.js.map
