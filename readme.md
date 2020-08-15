@@ -25,11 +25,31 @@ animateUriFactory({ duration: 60, shouldPushState: false }).start(
 )
 ```
 
-To bind all inside links, (Optional)
+Or you can bind all link(should in `a` tag href)
 
 ```js
 const instance = bindAllLink() // return a instance
 // do anything...
 ```
 
-That's all.
+## Used in Next.js
+
+You can use this into your next.js application. In the `_app.tsx`, add event listener on router change.
+
+```tsx
+import { animateUriFactory } from 'animate-uri/publish/index.esm'
+const animateInstance = animateUriFactory()
+
+// componentDidMount(): void {
+Router.events.on('routeChangeStart', (url) => {
+  animateInstance?.start(url)
+})
+
+Router.events.on('routeChangeComplete', () => {
+  animateInstance?.stop()
+})
+
+// }
+```
+
+That's all. Enjoy.
