@@ -4,7 +4,7 @@ exports.bindAllLink = exports.animateUriFactory = exports.EmojiRegExp = void 0;
 /*
  * @Author: Innei
  * @Date: 2020-08-13 21:31:23
- * @LastEditTime: 2020-08-14 14:20:13
+ * @LastEditTime: 2020-08-15 21:05:21
  * @LastEditors: Innei
  * @FilePath: /url-animation/index.ts
  * @Coding with Love
@@ -53,7 +53,7 @@ exports.animateUriFactory = function (config) {
                 timer = setInterval(function () {
                     var beforeUri = decodeURI(location.pathname).replace(exports.EmojiRegExp, '');
                     if (beforeUri === to) {
-                        resolve();
+                        resolve(_this);
                         return _this.stop();
                     }
                     var isBuilding = to.indexOf(beforeUri) > -1;

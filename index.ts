@@ -1,7 +1,7 @@
 /*
  * @Author: Innei
  * @Date: 2020-08-13 21:31:23
- * @LastEditTime: 2020-08-14 14:20:13
+ * @LastEditTime: 2020-08-15 21:05:21
  * @LastEditors: Innei
  * @FilePath: /url-animation/index.ts
  * @Coding with Love
@@ -61,7 +61,7 @@ export const animateUriFactory = (
           let beforeUri = decodeURI(location.pathname).replace(EmojiRegExp, '')
 
           if (beforeUri === to) {
-            resolve()
+            resolve(this)
             return this.stop()
           }
           const isBuilding = to.indexOf(beforeUri) > -1

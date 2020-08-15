@@ -32,6 +32,15 @@ const instance = bindAllLink() // return a instance
 // do anything...
 ```
 
+More fun ways to use, you can change text after once finished animate, and again.
+
+```ts
+instance
+  ?.start('/hey，这里是Tomon~。谢谢你能来看我~')
+  .then((i) => i?.start('/類は友を呼ぶ，独特的人会找到独特的人'))
+  .then((i) => i.start('/'))
+```
+
 ## Used in Next.js
 
 You can use this into your next.js application. In the `_app.tsx`, add event listener on router change.
