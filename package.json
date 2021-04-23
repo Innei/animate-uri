@@ -4,13 +4,12 @@
   "license": "MIT",
   "description": "Animate your url transitions for that extra flair",
   "author": "Innei",
-  "main": "publish/index.js",
-  "source": "index.ts",
+  "main": "publish/index.umd.js",
+  "module": "publish/index.js",
   "repository": "Innei/animate-uri",
   "types": "publish/index.d.ts",
   "files": [
-    "publish/**/*",
-    "index.ts"
+    "publish"
   ],
   "keywords": [
     "animate",
@@ -19,12 +18,13 @@
   ],
   "scripts": {
     "predeploy": "rm -rf dist",
-    "package": "sh ./build-package.sh",
+    "package": "tsc && rollup -c",
     "start": "parcel index.html",
     "deploy": "parcel build ./index.html --public-url /animate-uri && gh-pages -d dist"
   },
   "devDependencies": {
     "cssnano": "^4.1.10",
+    "rollup": "^2.26.5",
     "typescript": "^3.9.7"
   }
 }
