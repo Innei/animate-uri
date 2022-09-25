@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "cssnano": "^4.1.10",
-    "rollup": "^2.26.5",
+    "rollup": "2.79.1",
     "typescript": "^3.9.7"
   }
 }
