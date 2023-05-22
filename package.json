@@ -25,6 +25,6 @@
   "devDependencies": {
     "cssnano": "^6.0.0",
     "rollup": "^2.26.5",
-    "typescript": "^3.9.7"
+    "typescript": "^5.0.0"
   }
 }
