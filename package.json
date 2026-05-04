@@ -23,7 +23,7 @@
     "deploy": "parcel build ./index.html --public-url /animate-uri && gh-pages -d dist"
   },
   "devDependencies": {
-    "cssnano": "^6.0.0",
+    "cssnano": "^7.0.0",
     "rollup": "^3.0.0",
     "typescript": "^5.0.0"
   }
